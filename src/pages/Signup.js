@@ -67,7 +67,7 @@ export const Signup = () => {
         <button type="submit" onClick={onSubmit} className={styles.Signup}>
           Sign up
         </button>
-        <p>
+        <p className={styles.underlast}>
           Already have an account? <NavLink to="/login">Sign in</NavLink>
         </p>
       </div>

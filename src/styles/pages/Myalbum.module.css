@@ -131,9 +131,10 @@
   background-image: linear-gradient(to right, aqua, blueviolet, pink, red);
 }
 .input {
+  width: 350px;
   height: 30px;
   background-color: transparent;
-  border: 2px solid black;
+  border: 2px solid white;
   border-right: 0px;
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
@@ -154,13 +155,13 @@
   margin-right: 100px;
 }
 .addbtn {
-  height: 36.53px;
-  width: 72px;
+  height: 36px;
+  width: 122px;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
-  border: 2px solid black;
+  border: 2px solid white;
   font-size: 18px;
-  color: black;
+  color: crimson;
 }
 .middle {
   display: 100%;
@@ -181,9 +182,11 @@
   display: flex;
   flex-direction: column;
   text-align: center;
+  justify-content: center;
   line-height: 30px;
-  background-color: aqua;
+  background-color: crimson;
   border-radius: 10px;
+  color: white;
 }
 .cardimg {
   width: 100%;
@@ -199,4 +202,7 @@
 }
 .cardimgin1 {
   width: 100%;
+}
+.title {
+  font-size: 28px;
 }

@@ -29,6 +29,7 @@ export const Home = () => {
   const [thing, setThing] = useState(0);
   const [data, setData] = useState([]);
   const [acc, setAcc] = useState("");
+  const [artist, setArtist] = useState([]);
 
   const logout = () => {
     signOut(auth)
@@ -39,17 +40,27 @@ export const Home = () => {
       .catch((error) => {});
   };
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user;
-      console.log(uid);
-      setAcc(uid);
-    } else {
-      // ...
-    }
-  });
-
   useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user;
+        console.log(uid);
+        setAcc(uid);
+      } else {
+        // ...
+      }
+    });
+
+    axios
+      .get("http://localhost:8000/artists", {})
+      .then((res) => {
+        setArtist(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log("error");
+      });
+
     axios
       .get("http://localhost:8000/songs", {})
       .then((res) => {
@@ -70,8 +81,6 @@ export const Home = () => {
     setThing(thing - 1);
   }
 
-  const songsarr = [0, 0];
-  const artists = [0, 0, 0, 0, 0];
   return (
     <div className={styles.outer}>
       <div className={styles.container}>
@@ -167,7 +176,11 @@ export const Home = () => {
             <div className={styles.topheader}>
               <h1 className={styles.dreamtop}>
                 Welcome {acc && acc.email}
-                {acc && <button onClick={logout}>log out</button>}
+                {acc && (
+                  <button onClick={logout} className={styles.logoutbutt}>
+                    log out
+                  </button>
+                )}
               </h1>
             </div>
             <div className={styles.toptopbottom}>
@@ -217,7 +230,9 @@ export const Home = () => {
             >
               {data.map((_, index) => (
                 <div className={styles.card}>
-                  <div className={styles.middlepicture}></div>
+                  <div className={styles.middlepicture}>
+                    <img src={data[index].url} className={styles.IMG}></img>
+                  </div>
                   <div className={styles.cardsong}>{data[index].name}</div>
                   <div className={styles.cardname}>{data[index].artist}</div>
                 </div>
@@ -227,33 +242,62 @@ export const Home = () => {
           <div className={styles.bottom}>
             <div className={styles.bottomleft}>
               <div className={styles.rightHeader}>Billboard Top Charts</div>
-              {songsarr.map(() => (
-                <div className={styles.songs}>
-                  <div className={styles.songsleft}>
-                    <div className={styles.songpicture}></div>
-                    <div className={styles.nameartist}>
-                      <div>Level of concern</div>
-                      <div className={styles.undercards}>Twenty One Pilots</div>
-                    </div>
+              <div className={styles.songs}>
+                <div className={styles.songsleft}>
+                  <div className={styles.songpicture}>
+                    <img
+                      src="https://charts-static.billboard.com/img/2004/12/mariah-carey-tgq-180x180.jpg"
+                      className={styles.SONGPIC}
+                    ></img>
                   </div>
-                  <div className={styles.songsright}>
-                    <div className={styles.songtime}>4:56</div>
-                    <div className={styles.download}>
-                      <FiDownload className={styles.lefticons}></FiDownload>
-                    </div>
-                    <div className={styles.favo}>
-                      <AiOutlineHeart
-                        className={styles.lefticons}
-                      ></AiOutlineHeart>
-                    </div>
-                    <div className={styles.addtoplay}>
-                      <AiOutlinePlus
-                        className={styles.lefticons}
-                      ></AiOutlinePlus>
-                    </div>
+                  <div className={styles.nameartist}>
+                    <div>All I Want For Christmas Is You</div>
+                    <div className={styles.undercards}>Mariah Carey</div>
                   </div>
                 </div>
-              ))}
+                <div className={styles.songsright}>
+                  <div className={styles.songtime}>3:55</div>
+                  <div className={styles.download}>
+                    <FiDownload className={styles.lefticons}></FiDownload>
+                  </div>
+                  <div className={styles.favo}>
+                    <AiOutlineHeart
+                      className={styles.lefticons}
+                    ></AiOutlineHeart>
+                  </div>
+                  <div className={styles.addtoplay}>
+                    <AiOutlinePlus className={styles.lefticons}></AiOutlinePlus>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.songs}>
+                <div className={styles.songsleft}>
+                  <div className={styles.songpicture}>
+                    <img
+                      src="https://charts-static.billboard.com/img/1978/05/wham-usx-106x106.jpg"
+                      className={styles.SONGPIC}
+                    ></img>
+                  </div>
+                  <div className={styles.nameartist}>
+                    <div>Last Christmas</div>
+                    <div className={styles.undercards}>Wham!</div>
+                  </div>
+                </div>
+                <div className={styles.songsright}>
+                  <div className={styles.songtime}>4:22</div>
+                  <div className={styles.download}>
+                    <FiDownload className={styles.lefticons}></FiDownload>
+                  </div>
+                  <div className={styles.favo}>
+                    <AiOutlineHeart
+                      className={styles.lefticons}
+                    ></AiOutlineHeart>
+                  </div>
+                  <div className={styles.addtoplay}>
+                    <AiOutlinePlus className={styles.lefticons}></AiOutlinePlus>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className={styles.bottomright}>
               <div className={styles.bottomrighttop}>
@@ -261,8 +305,13 @@ export const Home = () => {
                 <div className={styles.seeall}>See all</div>
               </div>
               <div className={styles.bottomrightbottom}>
-                {artists.map(() => (
-                  <div className={styles.artistcircle}></div>
+                {artist.map((_, index) => (
+                  <div className={styles.artistcircle}>
+                    <img
+                      src={artist[index].url}
+                      className={styles.artistcircles}
+                    ></img>
+                  </div>
                 ))}
               </div>
             </div>

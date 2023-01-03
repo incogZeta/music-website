@@ -1,5 +1,5 @@
 import styles from "../styles/pages/Myalbum.module.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { HiLightningBolt } from "react-icons/hi";
@@ -17,6 +17,7 @@ import { FiSearch } from "react-icons/fi";
 
 export const Myalbum = () => {
   const [data, setData] = useState([]);
+  const nameref = useRef();
 
   useEffect(() => {
     axios
@@ -29,7 +30,17 @@ export const Myalbum = () => {
       });
   }, []);
 
-  const additem = () => {};
+  const additem = () => {
+    if (nameref.current.value) {
+      axios
+        .post("http://localhost:8000/playlists", {
+          title: nameref.current.value,
+        })
+        .then((res) => {
+          setData([...data, res.data]);
+        });
+    }
+  };
 
   return (
     <div className={styles.outer}>
@@ -115,11 +126,14 @@ export const Myalbum = () => {
           <div className={styles.righttop}>
             <h1>Amarsaikhan's Album</h1>
             <div className={styles.searchand}>
-              <FiSearch className={styles.FiSearch} />
-              <input className={styles.input} placeholder="search"></input>{" "}
+              <input
+                className={styles.input}
+                placeholder="Create a New Playlist"
+                ref={nameref}
+              ></input>
               <div className={styles.addbtncont}>
                 <button className={styles.addbtn} onClick={additem}>
-                  add
+                  Add Playlist
                 </button>
               </div>
             </div>
@@ -128,7 +142,7 @@ export const Myalbum = () => {
             <div className={styles.middlecont}>
               {data.map((_, index) => (
                 <div className={styles.card}>
-                  <p>{data[index].title}</p>
+                  <p className={styles.title}>{data[index].title}</p>
                 </div>
               ))}
             </div>

@@ -2,6 +2,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { auth } from "../config";
+import { MdOutlinePersonOutline } from "react-icons/md";
+import { BiLock } from "react-icons/bi";
+import styles from "../styles/pages/Login.module.css";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -25,25 +28,46 @@ export const Login = () => {
       });
   };
   return (
-    <div>
-      <h1>Sign in</h1>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email address"
-      ></input>
-      <input
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="password"
-      ></input>
-      <button type="submit" onClick={onSubmit}>
-        Sign in
-      </button>
-      <p>
-        no account?<NavLink to="/Signup">Sign up</NavLink>
-      </p>
+    <div className={styles.outer}>
+      <div className={styles.container}>
+        <h1 className={styles.header}>Login</h1>
+        <div className={styles.username}>
+          <p>Gmail / Username</p>
+          <div className={styles.iconputter}>
+            <MdOutlinePersonOutline className={styles.icon} />
+            <input
+              className={styles.input}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email address"
+            ></input>
+          </div>
+          <div className={styles.underline}></div>
+        </div>
+
+        <div className={styles.password}>
+          <p>Password</p>
+          <div className={styles.iconputter}>
+            <BiLock className={styles.icon} />
+            <input
+              className={styles.input}
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="password"
+            ></input>
+          </div>
+          <div className={styles.underline}></div>
+          <div className={styles.forgot}>Forgot password?</div>
+        </div>
+        <button type="submit" onClick={onSubmit} className={styles.Signup}>
+          Sign in
+        </button>
+        <p className={styles.underlast}>
+          no account? <NavLink to="/Signup"> Sign up</NavLink>
+        </p>
+      </div>
     </div>
   );
 };
+

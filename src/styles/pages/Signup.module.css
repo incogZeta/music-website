@@ -71,5 +71,24 @@ p {
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  margin-top: 1.5px;
+  margin-top: 3.5px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 18px;
 }
+.underlast {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 19px;
+  margin-top: 10px;
+}
+.Signup {
+  width: 75%;
+  height: 45px;
+  border-bottom-left-radius: 27px;
+  border-bottom-right-radius: 27px;
+  border-top-left-radius: 27px;
+  border-top-right-radius: 27px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 20px;
+  background-image: linear-gradient(to right, aqua, #e639f7);
+  color: white;
+} 
