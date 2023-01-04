@@ -1,7 +1,4 @@
-import styles from "../styles/pages/Myalbum.module.css";
-import { useEffect, useRef } from "react";
-import { useState } from "react";
-import axios from "axios";
+import styles from "../styles/pages/insidePlaylist.module.css";
 import { HiLightningBolt } from "react-icons/hi";
 import { AiOutlineHome } from "react-icons/ai";
 import { TbChartBubble } from "react-icons/tb";
@@ -12,17 +9,30 @@ import { AiOutlineBarChart } from "react-icons/ai";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsDisc } from "react-icons/bs";
 import { AiOutlineFolder } from "react-icons/ai";
-import { Link, useParams } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export const Myalbum = () => {
-  const [data, setData] = useState([]);
-  console.log(data);
-  const nameref = useRef();
+export const InsidePlaylist = () => {
+  const [data, setData] = useState({});
+  const param = useParams();
+  const navigate = useNavigate();
+
+  const deletePlaylist = () => {
+    axios
+      .delete("http://localhost:8000/playlist/" + param.id)
+      .then((res) => {
+        console.log("Deleted", res.data);
+        navigate("/Myalbum");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/playlists", {})
+      .get("http://localhost:8000/playlist/" + param.id)
       .then((res) => {
         setData(res.data);
       })
@@ -31,25 +41,13 @@ export const Myalbum = () => {
       });
   }, []);
 
-  const additem = () => {
-    if (nameref.current.value) {
-      axios
-        .post("http://localhost:8000/playlists", {
-          title: nameref.current.value,
-        })
-        .then((res) => {
-          setData([...data, res.data]);
-        });
-    }
-  };
-
   return (
     <div className={styles.outer}>
       <div className={styles.container}>
         <div className={styles.leftcont}>
           <div className={styles.logo}>
             <HiLightningBolt />
-            <div>Mix Music</div>
+            Mix Music
           </div>
           <div className={styles.leftmiddle}>
             <div className={styles.leftHeader}>Recommend</div>
@@ -108,47 +106,29 @@ export const Myalbum = () => {
             <div className={styles.leftHeader}>Playlist</div>
             <div className={`${styles.leftwordsbottom} ${styles.hover}`}>
               <div className={`${styles.leftglow} ${styles.glow}`}></div>
-              <BsDisc className={styles.lefticons} />
-              Best of Billie Ei
+              <BsDisc className={styles.lefticons}></BsDisc>Best of Billie Ei
             </div>
             <div className={`${styles.leftwordsbottom} ${styles.hover}`}>
               <div className={`${styles.leftglow} ${styles.glow}`}></div>
-              <BsDisc className={styles.lefticons} />
-              Best of Eminem
+              <BsDisc className={styles.lefticons}></BsDisc>Best of Eminem
             </div>
             <div className={`${styles.leftwordsbottom} ${styles.hover}`}>
               <div className={`${styles.leftglow} ${styles.glow}`}></div>
-              <BsDisc className={styles.lefticons} />
-              Best of Ariana
+              <BsDisc className={styles.lefticons}></BsDisc>Best of Ariana
             </div>
           </div>
         </div>
         <div className={styles.right}>
-          <div className={styles.righttop}>
-            <h1>Amarsaikhan's Album</h1>
-            <div className={styles.searchand}>
-              <input
-                className={styles.input}
-                placeholder="Create a New Playlist"
-                ref={nameref}
-              ></input>
-              <div className={styles.addbtncont}>
-                <button className={styles.addbtn} onClick={additem}>
-                  Add Playlist
-                </button>
-              </div>
-            </div>
+          <div className={styles.titleer}>
+            <h1>{data?.title}</h1>
+            <h3 className={styles.delete} onClick={deletePlaylist}>
+              delete playlist
+            </h3>
           </div>
-          <div className={styles.middle}>
-            <div className={styles.middlecont}>
-              {data.map((el, index) => (
-                <div className={styles.card}>
-                  <Link to={`/insidePlaylist/` + el._id}>
-                    <p className={styles.title}>{data[index].title}</p>
-                  </Link>
-                </div>
-              ))}
-            </div>
+          <div>
+            {data?.songs?.map((song) => (
+              <div>{song.name}</div>
+            ))}
           </div>
         </div>
       </div>

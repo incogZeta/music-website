@@ -93,7 +93,10 @@ export const Home = () => {
             <div className={styles.leftHeader}>Recommend</div>
             <div className={`${styles.leftwordstop} ${styles.hover}`}>
               <div className={`${styles.leftglow} ${styles.glow}`}></div>
-              <AiOutlineHome className={styles.lefticons}></AiOutlineHome>Home
+              <AiOutlineHome className={styles.lefticons}></AiOutlineHome>
+              <Link className={styles.myalbum} to="/">
+                Home
+              </Link>
             </div>
             <div className={`${styles.leftwordstop} ${styles.hover}`}>
               <div className={`${styles.leftglow} ${styles.glow}`}></div>
