@@ -22,35 +22,16 @@ import { BsPlayFill } from "react-icons/bs";
 import { TiArrowShuffle } from "react-icons/ti";
 import { AiFillHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { auth } from "../config";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useAuth } from "../contexts/AuthContext";
 
 export const Home = () => {
   const [thing, setThing] = useState(0);
   const [data, setData] = useState([]);
-  const [acc, setAcc] = useState("");
   const [artist, setArtist] = useState([]);
 
-  const logout = () => {
-    signOut(auth)
-      .then(() => {
-        setAcc(" ");
-        console.log("logged out");
-      })
-      .catch((error) => {});
-  };
+  const { logout, user } = useAuth();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user;
-        console.log(uid);
-        setAcc(uid);
-      } else {
-        // ...
-      }
-    });
-
     axios
       .get("http://localhost:8000/artists", {})
       .then((res) => {
@@ -170,7 +151,7 @@ export const Home = () => {
                 <div className={styles.profile}>
                   <h4>
                     <Link to="/Login" className={styles.nocolor}>
-                      {acc && "Log out"} {!acc && "Log in"}
+                      {user && "Log out"} {!user && "Log in"}
                     </Link>
                   </h4>
                 </div>
@@ -178,8 +159,8 @@ export const Home = () => {
             </div>
             <div className={styles.topheader}>
               <h1 className={styles.dreamtop}>
-                Welcome {acc && acc.email}
-                {acc && (
+                Welcome {user && user.email}
+                {user && (
                   <button onClick={logout} className={styles.logoutbutt}>
                     log out
                   </button>

@@ -14,28 +14,33 @@ import { BsDisc } from "react-icons/bs";
 import { AiOutlineFolder } from "react-icons/ai";
 import { Link, useParams } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { useAuth } from "../contexts/AuthContext";
 
 export const Myalbum = () => {
   const [data, setData] = useState([]);
-  console.log(data);
+  const { user } = useAuth();
   const nameref = useRef();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/playlists", {})
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log("error");
-      });
-  }, []);
+    if (user) {
+      axios
+        .get("http://localhost:8000/playlists?uid=" + user.uid)
+        .then((res) => {
+          setData(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+    }
+  }, [user]);
 
   const additem = () => {
     if (nameref.current.value) {
       axios
         .post("http://localhost:8000/playlists", {
           title: nameref.current.value,
+          description: user.uid,
         })
         .then((res) => {
           setData([...data, res.data]);
