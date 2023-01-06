@@ -10,11 +10,15 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BsDisc } from "react-icons/bs";
 import { AiOutlineFolder } from "react-icons/ai";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 
 export const InsidePlaylist = () => {
   const [data, setData] = useState({});
+  const [songs, setSongs] = useState([]);
+  const { user } = useAuth();
+  const nameref = useRef();
   const param = useParams();
   const navigate = useNavigate();
 
@@ -30,11 +34,44 @@ export const InsidePlaylist = () => {
       });
   };
 
+  const additem = (_, index) => {
+    if (nameref.current.value) {
+      axios
+        .post("http://localhost:8000/songs", {
+          name: nameref.current.value,
+        })
+        .then((res) => {
+          axios
+            .put("http://localhost:8000/playlist/" + param.id, {
+              id: res.data._id,
+            })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   useEffect(() => {
     axios
       .get("http://localhost:8000/playlist/" + param.id)
       .then((res) => {
         setData(res.data);
+      })
+      .catch((err) => {
+        console.log("error");
+      });
+    axios
+      .get("http://localhost:8000/songs/")
+      .then((res) => {
+        setSongs(res.data);
       })
       .catch((err) => {
         console.log("error");
@@ -119,15 +156,30 @@ export const InsidePlaylist = () => {
           </div>
         </div>
         <div className={styles.right}>
+          <div className={styles.righttop}>
+            <h1>{user && user.email}'s Playlists</h1>
+            <div className={styles.searchand}>
+              <input
+                className={styles.input}
+                placeholder="Add a New Song"
+                ref={nameref}
+              ></input>
+              <div className={styles.addbtncont}>
+                <button className={styles.addbtn} onClick={additem}>
+                  Add Song
+                </button>
+              </div>
+            </div>
+          </div>
           <div className={styles.titleer}>
             <h1>{data?.title}</h1>
             <h3 className={styles.delete} onClick={deletePlaylist}>
               delete playlist
             </h3>
           </div>
-          <div>
+          <div className={styles.middle}>
             {data?.songs?.map((song) => (
-              <div>{song.name}</div>
+              <div className={styles.songs}>{song.name}</div>
             ))}
           </div>
         </div>

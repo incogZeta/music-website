@@ -43,7 +43,7 @@ export const Home = () => {
       });
 
     axios
-      .get("http://localhost:8000/songs", {})
+      .get("http://localhost:8000/songs?max=10", {})
       .then((res) => {
         setData(res.data);
         console.log(res.data);

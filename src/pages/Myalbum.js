@@ -130,7 +130,7 @@ export const Myalbum = () => {
         </div>
         <div className={styles.right}>
           <div className={styles.righttop}>
-            <h1>Amarsaikhan's Album</h1>
+            <h1>{user && user.email}'s Album</h1>
             <div className={styles.searchand}>
               <input
                 className={styles.input}
