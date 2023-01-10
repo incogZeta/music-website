@@ -419,6 +419,7 @@
   margin-top: 12px;
   border: solid 1px white;
   border-radius: 10px;
+  cursor: pointer;
 }
 .IMG {
   width: 100%;

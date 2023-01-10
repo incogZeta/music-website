@@ -15,6 +15,7 @@ import { AiOutlineFolder } from "react-icons/ai";
 import { Link, useParams } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { useAuth } from "../contexts/AuthContext";
+import { client } from "../client/index.js"
 
 export const Myalbum = () => {
   const [data, setData] = useState([]);
@@ -23,8 +24,8 @@ export const Myalbum = () => {
 
   useEffect(() => {
     if (user) {
-      axios
-        .get("http://localhost:8000/playlists?uid=" + user.uid)
+      client
+        .get("/playlists?uid=" + user.uid)
         .then((res) => {
           setData(res.data);
           console.log(res.data);
@@ -37,8 +38,8 @@ export const Myalbum = () => {
 
   const additem = () => {
     if (nameref.current.value) {
-      axios
-        .post("http://localhost:8000/playlists", {
+      client
+        .post("/playlists", {
           title: nameref.current.value,
           description: user.uid,
         })

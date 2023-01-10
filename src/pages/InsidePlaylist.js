@@ -13,6 +13,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
+import { client } from "../client/index.js"
 
 export const InsidePlaylist = () => {
   const [data, setData] = useState({});
@@ -23,8 +24,8 @@ export const InsidePlaylist = () => {
   const navigate = useNavigate();
 
   const deletePlaylist = () => {
-    axios
-      .delete("http://localhost:8000/playlist/" + param.id)
+    client
+      .delete("/playlist/" + param.id)
       .then((res) => {
         console.log("Deleted", res.data);
         navigate("/Myalbum");
@@ -36,13 +37,13 @@ export const InsidePlaylist = () => {
 
   const additem = (_, index) => {
     if (nameref.current.value) {
-      axios
-        .post("http://localhost:8000/songs", {
+      client
+        .post("/songs", {
           name: nameref.current.value,
         })
         .then((res) => {
-          axios
-            .put("http://localhost:8000/playlist/" + param.id, {
+          client
+            .put("/playlist/" + param.id, {
               id: res.data._id,
             })
             .then((res) => {

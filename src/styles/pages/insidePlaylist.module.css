@@ -171,6 +171,7 @@
   padding: 10px;
   background-color: white;
   color: black;
+  cursor: pointer;
 }
 .songs {
   width: 88.3%;

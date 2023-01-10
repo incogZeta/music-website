@@ -23,6 +23,7 @@ import { TiArrowShuffle } from "react-icons/ti";
 import { AiFillHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { client } from "../client/index.js"
 
 export const Home = () => {
   const [thing, setThing] = useState(0);
@@ -32,8 +33,8 @@ export const Home = () => {
   const { logout, user } = useAuth();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/artists", {})
+    client
+      .get("/artists", {})
       .then((res) => {
         setArtist(res.data);
         console.log(res.data);
@@ -42,8 +43,8 @@ export const Home = () => {
         console.log("error");
       });
 
-    axios
-      .get("http://localhost:8000/songs?max=10", {})
+    client
+      .get("/songs?max=10", {})
       .then((res) => {
         setData(res.data);
         console.log(res.data);
